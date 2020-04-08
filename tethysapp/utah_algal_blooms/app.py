@@ -8,7 +8,7 @@ class UtahAlgalBlooms(TethysAppBase):
 
     name = 'Utah Algal Blooms'
     index = 'utah_algal_blooms:home'
-    icon = 'utah_algal_blooms/images/FarmingtonBay.jpg'
+    icon = 'utah_algal_blooms/images/FB.jpg'
     package = 'utah_algal_blooms'
     root_url = 'utah-algal-blooms'
     color = '#122af7'
