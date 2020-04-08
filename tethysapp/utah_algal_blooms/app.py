@@ -8,10 +8,10 @@ class UtahAlgalBlooms(TethysAppBase):
 
     name = 'Utah Algal Blooms'
     index = 'utah_algal_blooms:home'
-    icon = 'utah_algal_blooms/images/icon.gif'
+    icon = 'utah_algal_blooms/images/FarmingtonBay.jpg'
     package = 'utah_algal_blooms'
     root_url = 'utah-algal-blooms'
-    color = '#f39c12'
+    color = '#122af7'
     description = 'An app to track algal blooms in water bodies across the state of Utah'
     tags = ''
     enable_feedback = False
