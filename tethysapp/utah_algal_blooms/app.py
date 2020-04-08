@@ -12,7 +12,7 @@ class UtahAlgalBlooms(TethysAppBase):
     package = 'utah_algal_blooms'
     root_url = 'utah-algal-blooms'
     color = '#f39c12'
-    description = ''
+    description = 'An app to track algal blooms in water bodies across the state of Utah'
     tags = ''
     enable_feedback = False
     feedback_emails = []
