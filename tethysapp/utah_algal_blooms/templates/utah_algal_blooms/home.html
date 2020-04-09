@@ -8,14 +8,56 @@
 {% endblock %}
 
 {% block app_content %}
-  <h1>Algal Blooms in Utah</h1>
-  <p>Take advantage of beautiful typography to organize the content of your app:</p>
-  <h1>Heading 1</h1>
-  <h2>Heading 2</h2>
-  <h3>Heading 3</h3>
-  <h4>Heading 4</h4>
-  <h5>Heading 5</h5>
-  <h6>Heading 6</h6>
+<body>
+<head>
+
+         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
+    <style>
+        #mapid { height: 725px; }
+
+        h1 {
+            text-align: center;
+        }
+        h2 {
+            text-align: center;
+            font-size: 150%;
+        }
+    </style>
+</head>
+
+  <h1>Tracking Algal Blooms in Utah</h1>
+  <h2>Nathan Gunnell</h2>
+
+
+<div id="mapid"></div>
+
+<script>
+    var mymap = L.map('mapid').setView([39.5, -111.5], 7);
+
+L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoibnZndW5uZWxsIiwiYSI6ImNrNnM4NnVyNzAxbGYzZXBibXA1NnZtb2cifQ.tzoW7hq0QOZmpTTAQNpoJw'
+}).addTo(mymap);
+
+var lakes = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6397bf1fe48f47edb9785f8a40a12b8a/wms?', {
+    layers: 'Lakes_Utah',
+    format: 'image/png',
+    transparent: true,
+}).addTo(mymap);
+
+</script>
+</body>
+
 {% endblock %}
 
 {# Use the after_app_content block for modals #}
