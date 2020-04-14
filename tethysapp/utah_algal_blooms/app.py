@@ -30,6 +30,11 @@ class UtahAlgalBlooms(TethysAppBase):
                 controller='utah_algal_blooms.controllers.home'
             ),
             UrlMap(
+                name='new_bloom',
+                url='new_bloom',
+                controller='utah_algal_blooms.controllers.new_bloom'
+            ),
+            UrlMap(
                 name='info',
                 url='info',
                 controller='utah_algal_blooms.controllers.info'

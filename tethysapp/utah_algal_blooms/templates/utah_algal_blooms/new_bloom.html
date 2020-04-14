@@ -1,0 +1,20 @@
+{% extends "utah_algal_blooms/base.html" %}
+{% load tethys_gizmos %}
+
+
+{% block app_content %}
+  <h1>New Bloom</h1>
+  <form id="add-dam-form" method="post">
+    {% csrf_token %}
+    {% gizmo location_input %}
+    {% gizmo type_input %}
+    {% gizmo severity_input %}
+    {% gizmo date_input %}
+  </form>
+{% endblock %}
+
+{% block app_actions %}
+  {% gizmo cancel_button %}
+  {% gizmo add_button %}
+{% endblock %}
+

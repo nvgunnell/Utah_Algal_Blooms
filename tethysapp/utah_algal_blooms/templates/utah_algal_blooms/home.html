@@ -60,6 +60,10 @@ var lakes = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6397b
 
 {% endblock %}
 
+{% block app_actions %}
+  {% gizmo new_bloom_button %}
+{% endblock %}
+
 {# Use the after_app_content block for modals #}
 {% block after_app_content %}
   <!-- Example Modal -->

@@ -14,11 +14,13 @@
 
 {% block app_navigation_items %}
 {% url 'utah_algal_blooms:home' as home_url %}
+{% url 'utah_algal_blooms:new_bloom' as new_bloom_url %}
 {% url 'utah_algal_blooms:info' as info_url %}
 {% url 'utah_algal_blooms:help' as help_url %}
 
   <li class="title">App Navigation</li>
   <li class="{% if request.path == home_url %}active{% endif %}"><a href="{{home_url}}">Home</a></li>
+  <li class="{% if request.path == new_bloom_url %}active{% endif %}"><a href="{{new_bloom_url}}">New Bloom</a></li>
   <li class="{% if request.path == info_url %}active{% endif %}"><a href="{{info_url}}">Info</a></li>
   <li class="{% if request.path == help_url %}active{% endif %}"><a href="{{help_url}}">Help</a></li>
 
