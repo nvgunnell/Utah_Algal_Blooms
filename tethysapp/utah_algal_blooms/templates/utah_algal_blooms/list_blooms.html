@@ -1,0 +1,7 @@
+{% extends "utah_algal_blooms/base.html" %}
+{% load tethys_gizmos %}
+
+{% block app_content %}
+  <h1>Blooms</h1>
+  {% gizmo blooms_table %}
+{% endblock %}

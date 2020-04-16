@@ -1,9 +1,9 @@
 from django.shortcuts import render, reverse, redirect
 from django.contrib import messages
 from tethys_sdk.permissions import login_required
-from tethys_sdk.gizmos import Button, TextInput, DatePicker, SelectInput
+from tethys_sdk.gizmos import MapView, Button, TextInput, DatePicker, SelectInput, DataTableView
 from tethys_sdk.workspaces import app_workspace
-from .model import add_new_bloom
+from .model import add_new_bloom, get_all_blooms
 
 @login_required()
 def home(request):
@@ -137,6 +137,38 @@ def new_bloom(request, app_workspace):
     }
 
     return render(request,'utah_algal_blooms/new_bloom.html',context)
+
+
+@app_workspace
+@login_required()
+def list_blooms(request, app_workspace):
+    """
+    Show all blooms in a table view.
+    """
+    blooms = get_all_blooms(app_workspace.path)
+    table_rows = []
+
+    for blooms in blooms:
+        table_rows.append(
+            (
+                blooms['location'], blooms['type'],
+                blooms['severity'], blooms['date']
+            )
+        )
+
+    blooms_table = DataTableView(
+        column_names=('Location', 'Type', 'Severity', 'Date of Appearance'),
+        rows=table_rows,
+        searching=False,
+        orderClasses=False,
+        lengthMenu=[ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+    )
+
+    context = {
+        'blooms_table': blooms_table
+    }
+
+    return render(request, 'utah_algal_blooms/list_blooms.html', context)
 
 
 @login_required()
