@@ -1,7 +1,7 @@
 from django.shortcuts import render, reverse, redirect
 from django.contrib import messages
 from tethys_sdk.permissions import login_required
-from tethys_sdk.gizmos import MapView, Button, TextInput, DatePicker, SelectInput, DataTableView
+from tethys_sdk.gizmos import MapView, Button, TextInput, DatePicker, SelectInput, DataTableView, MVDraw, MVView
 from tethys_sdk.workspaces import app_workspace
 from .model import add_new_bloom, get_all_blooms
 
@@ -36,12 +36,14 @@ def new_bloom(request, app_workspace):
     type = 'Lake'
     severity = ''
     date = ''
+    mapdraw = ''
 
     #Errors
     location_error = ''
     type_error = ''
     severity_error = ''
     date_error = ''
+    mapdraw_error = ''
 
     #Handle form submission
     if request.POST and 'add-button' in request.POST:
@@ -51,6 +53,7 @@ def new_bloom(request, app_workspace):
         type = request.POST.get('type', None)
         severity = request.POST.get('severity', None)
         date = request.POST.get('date', None)
+        mapdraw = request.POST.get('geometry', None)
 
         #validate
         if not location:
@@ -69,8 +72,12 @@ def new_bloom(request, app_workspace):
             has_errors = True
             date_error = 'Date is required.'
 
+        if not mapdraw:
+            has_errors = True
+            mapdraw_error = 'Must draw location on map.'
+
         if not has_errors:
-            add_new_bloom(db_directory=app_workspace.path, location=location, type=type, severity=severity, date=date)
+            add_new_bloom(db_directory=app_workspace.path, mapdraw=mapdraw, location=location, type=type, severity=severity, date=date)
             return redirect(reverse('utah_algal_blooms:home'))
 
         messages.error(request, "Please fix errors.")
@@ -114,12 +121,34 @@ def new_bloom(request, app_workspace):
         error=date_error
     )
 
+    initial_view = MVView(
+        projection='EPSG:4326',
+        center=[-98.6, 39.8],
+        zoom=3.5
+    )
+
+    drawing_options = MVDraw(
+        controls=['Modify', 'Delete', 'Move', 'Point'],
+        initial='Point',
+        output_format='GeoJSON',
+        point_color='#FF0000'
+    )
+
+    mapdraw_input = MapView(
+        height='300px',
+        width='100%',
+        basemap='OpenStreetMap',
+        draw=drawing_options,
+        view=initial_view
+    )
+
+
     add_button = Button(
         display_text='Add',
         name='add-button',
         icon='glyphicon glyphicon-plus',
         style='success',
-        attributes={'form': 'add-dam-form'},
+        attributes={'form': 'add-bloom-form'},
         submit=True
     )
     cancel_button = Button(
@@ -132,6 +161,8 @@ def new_bloom(request, app_workspace):
         'type_input': type_input,
         'severity_input': severity_input,
         'date_input': date,
+        'mapdraw_input': mapdraw_input,
+        'mapdraw_error': mapdraw_error,
         'add_button': add_button,
         'cancel_button': cancel_button,
     }

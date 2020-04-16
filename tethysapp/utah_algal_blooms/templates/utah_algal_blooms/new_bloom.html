@@ -4,8 +4,13 @@
 
 {% block app_content %}
   <h1>New Bloom</h1>
-  <form id="add-dam-form" method="post">
+  <form id="add-bloom-form" method="post">
     {% csrf_token %}
+    <div class="form-group{% if mapdraw_error %} has-error{% endif %}">
+      <label class="control-label">Location</label>
+      {% gizmo mapdraw_input %}
+      {% if mapdraw_error %}<p class="help-block">{{ mapdraw_error }}</p>{% endif %}
+    </div>
     {% gizmo location_input %}
     {% gizmo type_input %}
     {% gizmo severity_input %}

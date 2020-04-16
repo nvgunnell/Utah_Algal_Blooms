@@ -3,14 +3,18 @@ import uuid
 import json
 
 
-def add_new_bloom(db_directory, location, type, severity, date):
+def add_new_bloom(db_directory, mapdraw, location, type, severity, date):
     """
-    Persist new dam.
+    Persist new bloom.
     """
+    # Convert GeoJSON to Python dictionary
+    mapdraw_dict = json.loads(mapdraw)
+
     # Serialize data to json
     new_bloom_id = uuid.uuid4()
     bloom_dict = {
         'id': str(new_bloom_id),
+        'mapdraw': mapdraw_dict['geometries'][0],
         'location': location,
         'type': type,
         'severity': severity,
