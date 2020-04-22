@@ -1,15 +1,23 @@
 from django.shortcuts import render, reverse, redirect
 from django.contrib import messages
 from tethys_sdk.permissions import login_required
-from tethys_sdk.gizmos import MapView, Button, TextInput, DatePicker, SelectInput, DataTableView, MVDraw, MVView
+from tethys_sdk.gizmos import MapView, Button, TextInput, DatePicker, SelectInput, DataTableView, MVDraw, MVView, MVLayer
 from tethys_sdk.workspaces import app_workspace
 from .model import add_new_bloom, get_all_blooms
 
+@app_workspace
 @login_required()
-def home(request):
+def home(request, app_workspace):
     """
     Controller for the app home page.
     """
+
+    blooms = get_all_blooms(app_workspace.path)
+    features = []
+    lat_list = []
+    lng_list = []
+
+
     new_bloom_button = Button(
         display_text='New Bloom',
         name='new_bloom-button',
