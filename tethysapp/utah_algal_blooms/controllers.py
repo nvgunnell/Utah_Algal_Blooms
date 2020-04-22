@@ -12,11 +12,6 @@ def home(request, app_workspace):
     Controller for the app home page.
     """
 
-    blooms = get_all_blooms(app_workspace.path)
-    features = []
-    lat_list = []
-    lng_list = []
-
 
     new_bloom_button = Button(
         display_text='New Bloom',
@@ -131,8 +126,8 @@ def new_bloom(request, app_workspace):
 
     initial_view = MVView(
         projection='EPSG:4326',
-        center=[-98.6, 39.8],
-        zoom=3.5
+        center=[-110, 39.8],
+        zoom=5
     )
 
     drawing_options = MVDraw(
@@ -176,6 +171,108 @@ def new_bloom(request, app_workspace):
     }
 
     return render(request,'utah_algal_blooms/new_bloom.html',context)
+
+
+@app_workspace
+@login_required()
+def map_blooms(request, app_workspace):
+    """
+    Controller for the background page.
+    """
+
+    # Get list of blooms and create blooms MVLayer:
+    blooms = get_all_blooms(app_workspace.path)
+    features = []
+    lat_list = []
+    lng_list = []
+
+
+    # Define GeoJSON Features
+    for bloom in blooms:
+        bloom_mapdraw = bloom.pop('mapdraw')
+        lat_list.append(bloom_mapdraw['coordinates'][1])
+        lng_list.append(bloom_mapdraw['coordinates'][0])
+
+        bloom_feature = {
+            'type': 'Feature',
+            'geometry': {
+                'type': bloom_mapdraw['type'],
+                'coordinates': bloom_mapdraw['coordinates'],
+            }
+        }
+
+        features.append(bloom_feature)
+
+    # Define GeoJSON FeatureCollection
+    blooms_feature_collection = {
+        'type': 'FeatureCollection',
+        'crs': {
+            'type': 'name',
+            'properties': {
+                'name': 'EPSG:4326'
+            }
+        },
+        'features': features
+    }
+
+    style = {'ol.style.Style': {
+        'image': {'ol.style.Circle': {
+            'radius': 10,
+            'fill': {'ol.style.Fill': {
+                'color':  '#d84e1f'
+            }},
+            'stroke': {'ol.style.Stroke': {
+                'color': '#ffffff',
+                'width': 1
+            }}
+        }}
+    }}
+
+
+    # Create a Map View Layer
+    blooms_layer = MVLayer(
+        source='GeoJSON',
+        options=blooms_feature_collection,
+        legend_title='Blooms',
+        layer_options={'style': style}
+    )
+
+    # Define view centered on dam locations
+    try:
+        view_center = [sum(lng_list) / float(len(lng_list)), sum(lat_list) / float(len(lat_list))]
+    except ZeroDivisionError:
+        view_center = [-98.6, 39.8]
+
+    view_options = MVView(
+        projection='EPSG:4326',
+        center=view_center,
+        zoom=7,
+        maxZoom=18,
+        minZoom=2
+    )
+
+    algal_bloom_map = MapView(
+        height='100%',
+        width='100%',
+        layers=[blooms_layer],
+        basemap='OpenStreetMap',
+        view=view_options,
+    )
+
+    new_bloom_button = Button(
+        display_text='New Bloom',
+        name='new_bloom-button',
+        icon='glyphicon glyphicon-plus',
+        style='success',
+        href=reverse('utah_algal_blooms:new_bloom')
+    )
+
+    context = {
+        'algal_bloom_map': algal_bloom_map,
+        'new_bloom_button': new_bloom_button
+    }
+
+    return render(request,'utah_algal_blooms/map_blooms.html',context)
 
 
 @app_workspace

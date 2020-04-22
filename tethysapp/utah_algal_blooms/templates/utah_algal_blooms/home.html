@@ -50,7 +50,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(mymap);
 
 var lakes = L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-6397bf1fe48f47edb9785f8a40a12b8a/wms?', {
-    layers: 'Lakes_Utah',
+    layers: 'UtahLakes',
     format: 'image/png',
     transparent: true,
 }).addTo(mymap);

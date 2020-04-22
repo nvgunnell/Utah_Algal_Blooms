@@ -1,5 +1,6 @@
 {% extends "utah_algal_blooms/base.html" %}
 {% load tethys_gizmos %}
+{% load static %}
 
 {% block header_buttons %}
   <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
@@ -8,9 +9,31 @@
 {% endblock %}
 
 {% block app_content %}
-  <h1>Frequently Asked Questions</h1>
+  <h1>Frequently Asked Questions</h1><br>
+  <h3>What are algal blooms?</h3>
+  <p>Harmful algal blooms are composed of cyanobacteria or blue-green algae which form as a result of eutrophication.</p>
+<br>
+  <h3>Why have there been so many algal blooms in Utah recently?</h3>
+  <p>Over the past several decades, higher amounts of nutrients, specifically nitrogen and phosphorus have been input into water bodies as a result of agriculture and wastewater processing. These nutrients
+  directly contribute to eutrophication. </p>
+<br>
   <h3>Can I enter historical algal bloom data in addition to present data?</h3>
   <p>Yes, you can enter data from as far back as you have records of harmful algal blooms.</p>
+
+<img src="{% static 'utah_algal_blooms/images/bloom3.jpg' %}" id="bloom3">
+
+
+    <style>
+        #bloom3 {
+          width: 70%;
+          height: 30%;
+          position: fixed;
+          padding; 25px;
+          bottom: 100px;
+          left: 35px;
+          }
+
+    </style>
 
 {% endblock %}
 

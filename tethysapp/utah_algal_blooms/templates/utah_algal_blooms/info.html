@@ -1,5 +1,6 @@
 {% extends "utah_algal_blooms/base.html" %}
 {% load tethys_gizmos %}
+{% load static %}
 
 {% block header_buttons %}
   <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
@@ -17,6 +18,27 @@
   <p>When an algal bloom occurs, for example in Utah Lake, you can add descriptive information to the table (location,
     year, severity, etc). You can also use the interactive map to add a point at the location in Utah Lake the bloom occurred
     which will store the coordinates and allow the point to appear on the map on the home page. </p>
+
+<img src="{% static 'utah_algal_blooms/images/bloom1.jpg' %}" id="bloom1">
+<img src="{% static 'utah_algal_blooms/images/bloom2.jpg' %}" id="bloom2">
+
+    <style>
+        #bloom1 {
+          width: 36%;
+          bottom: 200px;
+          position: fixed;
+          }
+
+        #bloom2 {
+          width: 36%;
+          height: 34.7%;
+          position: fixed;
+          left: 480px;
+          bottom: 200px;
+          }
+    </style>
+
+
 {% endblock %}
 
 {# Use the after_app_content block for modals #}

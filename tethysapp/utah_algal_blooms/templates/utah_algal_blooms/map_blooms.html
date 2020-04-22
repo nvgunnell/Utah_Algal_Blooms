@@ -1,0 +1,15 @@
+{% extends "utah_algal_blooms/base.html" %}
+{% load tethys_gizmos static %}
+
+{% block app_content %}
+  {% gizmo algal_bloom_map %}
+{% endblock %}
+
+{% block app_actions %}
+  {% gizmo new_bloom_button %}
+{% endblock %}
+
+{% block styles %}
+    {{ block.super }}
+    <link href="{% static 'utah_algal_blooms/css/map.css' %}" rel="stylesheet"/>
+{% endblock %}
